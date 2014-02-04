@@ -8,7 +8,7 @@ var stringifyJSON = function (obj, result) {
   if(obj == null) {   //exception case
     return "null";
   }
-  if(typeof result == "undefined") {  //initialize
+  if(typeof result == "undefined") {
     result = "";
   }
   
@@ -25,21 +25,26 @@ var stringifyJSON = function (obj, result) {
       return obj? "true" : "false";
       break;
     }
-    case "array" : {
-      if(obj.length > 0) {
-        result += obj.unshift();
-        if(obj.length > 1) {
-          result += ",";
+    case "object" : {
+      var test = JSON.stringify(obj);
+      
+      if(Array.isArray(obj)) {
+        if(obj.length > 0) {
+          result += JSON.stringify(obj[0]);
+          
+          if(obj.length > 1) {
+            result += ",";
+          }
+          return stringifyJSON(obj.slice(1, obj.length), result);
+        }else {
+          return "[" + result + "]";
         }
-        return stringifyJSON(obj, result);
       }else {
-        return + "[" + result + "]";
+        //return JSON.stringify(obj);
       }
       break;
     }
   }
   
-  
-  
-  return JSON.stringify(obj);   //cheat solution
+  //return JSON.stringify(obj);   //cheat solution
 };
