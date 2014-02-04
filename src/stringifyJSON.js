@@ -28,7 +28,7 @@ var stringifyJSON = function (obj, result) {
     case "object" : {
       var test = JSON.stringify(obj);
       
-      if(Array.isArray(obj)) {
+      if(Array.isArray(obj)) {    //array case
         if(obj.length > 0) {
           result += JSON.stringify(obj[0]);
           
@@ -39,8 +39,14 @@ var stringifyJSON = function (obj, result) {
         }else {
           return "[" + result + "]";
         }
-      }else {
-        //return JSON.stringify(obj);
+      }else {                     //object case
+          for(var key in obj) {
+            result += '"' + key + '":' + JSON.stringify(obj[key]) + ",";
+          }
+          if(result.length > 0) {     //remove trailing comma
+            result = result.slice(0, result.length - 1);
+          }
+          return "{" + result + "}";
       }
       break;
     }
