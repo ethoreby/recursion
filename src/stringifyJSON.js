@@ -26,11 +26,10 @@ var stringifyJSON = function (obj, result) {
       break;
     }
     case "object" : {
-      var test = JSON.stringify(obj);
       
       if(Array.isArray(obj)) {    //array case
         if(obj.length > 0) {
-          result += JSON.stringify(obj[0]);
+          result += stringifyJSON(obj[0]);
           
           if(obj.length > 1) {
             result += ",";
@@ -41,7 +40,9 @@ var stringifyJSON = function (obj, result) {
         }
       }else {                     //object case
           for(var key in obj) {
-            result += '"' + key + '":' + JSON.stringify(obj[key]) + ",";
+            if(typeof obj[key] != "undefined" && typeof obj[key] != "function") {
+              result += '"' + key + '":' + stringifyJSON(obj[key]) + ",";
+            }
           }
           if(result.length > 0) {     //remove trailing comma
             result = result.slice(0, result.length - 1);
@@ -51,6 +52,4 @@ var stringifyJSON = function (obj, result) {
       break;
     }
   }
-  
-  //return JSON.stringify(obj);   //cheat solution
 };
