@@ -4,15 +4,22 @@
 // };
 
 // But in stead we're going to implement it from scratch:
-var getElementsByClassName = function (className, child) {
+var getElementsByClassName = function (className, node, result) {
   // your code here
   
-  if(typeof child == "undefined") {
-    var body = document.body;
-    child = body.childNodes[2];
+  if(typeof node == "undefined") {
+    node = document.body;
+    result = [];
   }
   
-  var test = document.getElementsByClassName(className); //test case
+  if(typeof node.classList != "undefined" && node.classList.contains(className)) {
+    result.push(node);
+  }
+  if(node.childNodes.length > 0) {
+    for(var i = 0; i < node.childNodes.length; i++) {
+      result = getElementsByClassName(className, node.childNodes[i], result);
+    }
+  }
   
-  return document.getElementsByClassName(className);    //cheat solution
+  return result;      //returning an array- not NodeList. Is this correct?
 };
